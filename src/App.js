@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
+import { AnimatedSwitch, spring } from 'react-router-transition';
 import PropTypes from 'prop-types';
 
 import MainLayout from './components/layout/MainLayout/MainLayout';
@@ -37,10 +38,43 @@ class App extends React.Component {
   }
 
   render(){
+    const mapStyle = (style) => {
+      return {
+        opacity: style.opacity,
+        transform: `translateY(${style.offset}px)`,
+      };
+    };
+
+    const glide = (value) => {
+      return spring(value, {
+        stiffness: 45,
+        damping: 30,
+      });
+    };
+
+    const routeTransitions = {
+      atEnter: {
+        offset: -1150,
+      },
+      atLeave: {
+        offset: glide(0),
+      },
+      atActive: {
+        offset: 0,
+      },
+    };
+
     return (
       <BrowserRouter>
         <MainLayout>
-          <Switch location={location}>
+          <AnimatedSwitch
+            atEnter={{ opacity: 0 }}
+            atLeave={{ opacity: 0 }}
+            atActive={{ opacity: 1 }}
+            location={location}
+            mapStyles={mapStyle}
+            {...routeTransitions}
+          >
             <Route exact path='/' component={Home} />
             <Route exact path='/countries' component={Countries} />
             <Route exact path='/country/:id' component={Country} />
@@ -49,7 +83,7 @@ class App extends React.Component {
             <Route exact path='/trip/:id' component={Trip} />
             <Route exact path='/trips' component={Trips} />
             <Route path='*' component={NotFound} />
-          </Switch>
+          </AnimatedSwitch>
         </MainLayout>
       </BrowserRouter>
     );
