@@ -19,7 +19,7 @@ const OrderForm = (cost) => {
 
 };
 
-OrderForm.PropTypes = {
+OrderForm.propTypes = {
   cost: PropTypes.string,
 };
 
