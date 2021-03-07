@@ -23,6 +23,11 @@ export const removeTag = payload => ({ payload, type: REMOVE_TAG });
 // reducer
 
 export default function reducer(statePart = [], action = {}) {
+
+  function tagState() {
+    return !statePart.tags.includes(action.payload);
+  }
+
   switch (action.type) {
 
     case CHANGE_PHRASE:
@@ -60,9 +65,5 @@ export default function reducer(statePart = [], action = {}) {
 
     default:
       return statePart;
-  }
-
-  function tagState() {
-    return !statePart.tags.includes(action.payload);
   }
 }

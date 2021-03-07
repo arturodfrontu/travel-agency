@@ -7,7 +7,8 @@ export const getFilteredTrips = ({trips, filters}) => {
 
   if(filters.searchPhrase){
     const searchPhrasePattern = new RegExp(filters.searchPhrase, 'i');
-    filteredTripsOutput = filteredTripsOutput.filter(trip => searchPhrasePattern.test(trip.name));
+    const searchPhrase = (trip => searchPhrasePattern.test(trip.name));
+    filteredTripsOutput = filteredTripsOutput.filter(searchPhrase);
   }
 
   filteredTripsOutput = durationFilter(filteredTripsOutput, filters);
@@ -24,30 +25,38 @@ export const getTripById = ({trips}, tripId) => {
 };
 
 export const getTripsForCountry = ({trips}, countryCode) => {
-  const filteredTrips = trips.filter((trip) => trip.country.code == countryCode);
+  const getCountryCode = ((trip)=> trip.country.code == countryCode);
+  const filteredTrips = trips.filter(getCountryCode);
   return filteredTrips.length ? filteredTrips : [{error: true}];
 };
 
 const tagFilter = (filters, filteredTripsOutput) => {
   if (filters.tags.length) {
     for (let tag of filters.tags) {
-      filteredTripsOutput = filteredTripsOutput.filter(trip => trip.tags.indexOf(tag) >= 0);
+      const tagIndex = (trip => trip.tags.indexOf(tag) >= 0);
+      filteredTripsOutput = filteredTripsOutput.filter(tagIndex);
     }
   }
   return filteredTripsOutput;
 };
 
 const durationFilter = (filteredTripsOutput, filters) => {
-  filteredTripsOutput = filteredTripsOutput.filter(
-    (trip => trip.days >= filters.duration.from
-    && trip.days <= filters.duration.to)
+  const duration = (trip =>
+    trip.days >= filters.duration.from
+    && trip.days <= filters.duration.to
   );
+
+  filteredTripsOutput = filteredTripsOutput.filter(duration);
   return filteredTripsOutput;
 };
 
 const sortTripsDesc = (filteredTripsOutput) =>{
   filteredTripsOutput.sort((priceA, priceB) =>
-    (parseInt(priceA.cost.slice(1)) < parseInt(priceB.cost.slice(1))) ? 1 : -1);
+  {
+    const parsePrice = (value)=> parseInt((value).cost.slice(1));
+
+    return (parsePrice(priceA) < parsePrice(priceB)) ? 1 : -1;
+  });
 };
 
 /* ACTIONS */
