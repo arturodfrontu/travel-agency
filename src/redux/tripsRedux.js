@@ -3,39 +3,60 @@
 export const getAllTrips = ({trips}) => trips;
 
 export const getFilteredTrips = ({trips, filters}) => {
-  let output = trips;
+  let filteredTripsOutput = trips;
 
-  // filter by search phrase
   if(filters.searchPhrase){
-    const pattern = new RegExp(filters.searchPhrase, 'i');
-    output = output.filter(trip => pattern.test(trip.name));
+    const searchPhrasePattern = new RegExp(filters.searchPhrase, 'i');
+    const searchPhrase = (trip => searchPhrasePattern.test(trip.name));
+    filteredTripsOutput = filteredTripsOutput.filter(searchPhrase);
   }
 
-  // TODO - filter by duration
+  filteredTripsOutput = durationFilter(filteredTripsOutput, filters);
+  filteredTripsOutput = tagFilter(filters, filteredTripsOutput);
 
-  // TODO - filter by tags
+  sortTripsDesc(filteredTripsOutput);
 
-  // TODO - sort by cost descending (most expensive goes first)
-
-  return output;
+  return filteredTripsOutput;
 };
 
 export const getTripById = ({trips}, tripId) => {
-  const filtered = trips;
-
-  // TODO - filter trips by tripId
-
-  console.log('filtering trips by tripId:', tripId, filtered);
-  return filtered.length ? filtered[0] : {error: true};
+  const filteredTrips = trips.filter((trip) => trip.id == tripId);
+  return filteredTrips.length ? filteredTrips[0] : {error: true};
 };
 
 export const getTripsForCountry = ({trips}, countryCode) => {
-  const filtered = trips;
+  const getCountryCode = ((trip)=> trip.country.code == countryCode);
+  const filteredTrips = trips.filter(getCountryCode);
+  return filteredTrips.length ? filteredTrips : [{error: true}];
+};
 
-  // TODO - filter trips by countryCode
+const tagFilter = (filters, filteredTripsOutput) => {
+  if (filters.tags.length) {
+    for (let tag of filters.tags) {
+      const tagIndex = (trip => trip.tags.indexOf(tag) >= 0);
+      filteredTripsOutput = filteredTripsOutput.filter(tagIndex);
+    }
+  }
+  return filteredTripsOutput;
+};
 
-  console.log('filtering trips by countryCode:', countryCode, filtered);
-  return filtered.length ? filtered : [{error: true}];
+const durationFilter = (filteredTripsOutput, filters) => {
+  const duration = (trip =>
+    trip.days >= filters.duration.from
+    && trip.days <= filters.duration.to
+  );
+
+  filteredTripsOutput = filteredTripsOutput.filter(duration);
+  return filteredTripsOutput;
+};
+
+const sortTripsDesc = (filteredTripsOutput) =>{
+  filteredTripsOutput.sort((priceA, priceB) =>
+  {
+    const parsePrice = (value)=> parseInt((value).cost.slice(1));
+
+    return (parsePrice(priceA) < parsePrice(priceB)) ? 1 : -1;
+  });
 };
 
 /* ACTIONS */
