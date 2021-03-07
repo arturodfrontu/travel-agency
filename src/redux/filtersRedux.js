@@ -41,7 +41,7 @@ export default function reducer(statePart = [], action = {}) {
       };
 
     case ADD_TAG:
-      if(!statePart.tags.includes(action.payload)) {
+      if(tagState()) {
         return {
           ...statePart,
           tags: [
@@ -60,5 +60,9 @@ export default function reducer(statePart = [], action = {}) {
 
     default:
       return statePart;
+  }
+
+  function tagState() {
+    return !statePart.tags.includes(action.payload);
   }
 }
