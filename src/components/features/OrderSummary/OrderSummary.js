@@ -5,22 +5,20 @@ import {formatPrice} from '../../../utils/formatPrice';
 import PropTypes from 'prop-types';
 
 
-const OrderSummary = ({tripCost, tripOptions}) => {
+const OrderSummary = (tripCost, options) => {
+  console.log('+++', tripCost);
 
-  const basePrice = formatPrice(tripCost);
-  const totalTripCost = calculateTotal(basePrice, tripOptions);
+  const totalTripCost = calculateTotal(tripCost, options);
 
   return (
     <div className={styles.component}>
       <p>Total trip price: {formatPrice(totalTripCost)}</p>
     </div>
   );
-  
-
 };
 OrderSummary.propTypes = {
   tripCost: PropTypes.string,
-  tripOptions: PropTypes.object,
+  options: PropTypes.object,
 };
 
 export default OrderSummary;

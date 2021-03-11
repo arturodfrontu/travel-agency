@@ -7,7 +7,7 @@ const OrderForm = (tripCost, options) => (
 
   <Row>
     <Col xs={12}>
-      <OrderSummary tripCost={tripCost} tripOptions={options}/>
+      <OrderSummary tripCost={tripCost.tripCost} options={options}/>
     </Col>
   </Row>
 
@@ -17,6 +17,5 @@ OrderForm.propTypes = {
   options: PropTypes.object,
   tripCost: PropTypes.string,
 };
-
 
 export default OrderForm;
