@@ -6,6 +6,7 @@ import OrderOptionDropdown from './OrderOptionDropdown';
 import OrderOptionIcons from './OrderOptionIcons';
 import OrderOptionNumber from './OrderOptionNumber';
 import OrderOptionText from './OrderOptionsText';
+import OrderOptionDate from './OrderOptionDate';
 
 const optionTypes = {
   checkboxes: OrderOptionCheckboxes,
@@ -13,6 +14,7 @@ const optionTypes = {
   icons: OrderOptionIcons,
   number: OrderOptionNumber,
   text: OrderOptionText,
+  date: OrderOptionDate,
 };
   
 const OrderOption = ({id, setOrderOption, name, type, ...otherProps}) => {
