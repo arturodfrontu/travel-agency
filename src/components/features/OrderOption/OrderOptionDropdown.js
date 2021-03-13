@@ -11,7 +11,7 @@ const OrderOptionDropdown = ({values, required, currentValue, setOptionValue}) =
     <select
       className={Styles.dropdown}
       value={currentValue}
-      onChange={eventOptionValue}
+      onChange={()=>eventOptionValue}
     >
       {required ? '' : (
         <option key='null' value=''>---</option>
