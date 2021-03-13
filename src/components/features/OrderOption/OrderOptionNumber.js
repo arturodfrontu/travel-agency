@@ -1,15 +1,33 @@
 import React from 'react';
 import Styles from './OrderOption.scss';
-//import PropTypes from 'prop-types';
+import {formatPrice} from '../../../utils/formatPrice';
+import PropTypes from 'prop-types';
 
-const OrderOptionCheckboxes =() => (
-  <div className={Styles.checkboxes}>
-      
-  </div>
-);
+const OrderOptionNumber =({currentValue, limits, price, setOptionValue}) => {
 
-// OrderOptionCheckboxes.propTypes = {
+  const eventOptionValue = (event)=> {
+    setOptionValue(event.currrentTarget.value);
+  };
 
-// };
+  return(
+    <div className={Styles.number}>
+      <input type='number'
+        className={Styles.inputSmall}
+        value={currentValue}
+        min={limits.min}
+        max={limits.max}
+        onChange={eventOptionValue}
+      />
+      {formatPrice(price)}
+    </div>
+  );
+};
 
-export default OrderOptionCheckboxes;
+OrderOptionNumber.propTypes = {
+  currentValue: PropTypes.node,
+  limits: PropTypes.object,
+  price: PropTypes.string,
+  setOptionValue: PropTypes.func,
+};
+
+export default OrderOptionNumber;

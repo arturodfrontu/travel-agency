@@ -4,7 +4,7 @@ import Styles from './OrderOption.scss';
 
 const OrderOptionCheckboxes =() => (
   <div className={Styles.checkboxes}>
-      
+      Checkboxes
   </div>
 );
 
