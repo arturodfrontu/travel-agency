@@ -39,4 +39,20 @@ describe('Component TripSummary', ()=>{
     expect(renderedName).toEqual(expectedName);
     expect(renderedDays).toEqual(`${expectedDays} days`);
   });
+
+  it('should render correct tags', ()=>{
+    const expectedTags = ['1','2','3'];
+    const component = shallow(<TripSummary id='test' image='image' name='name' cost='cost' days={1} tags={expectedTags} />);
+      
+    for(let tag in expectedTags){
+      const renderedTag = component.find('.tag').at(tag).text();
+
+      expect(renderedTag).toEqual(expectedTags[tag]);
+    }
+  });
+  it('should throw error if tags are FALSE', ()=>{
+    const component = shallow(<TripSummary id='test' image='image' name='name' cost='cost' days={1} tags={[]} />);
+    const checkedDiv = component.find('.tags').exists();
+    expect(checkedDiv).toEqual(false); 
+  });
 });
