@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import Hero from './Hero';
 
-describe('Component Hero', () => {
+describe('Component OrderOption', () => {
   it('should render without crashing', () => {
     const component = shallow(<Hero titleText='Lorem ipsum' />);
     expect(component).toBeTruthy();
